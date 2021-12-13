@@ -13,6 +13,7 @@ class Case(object):
 		pass
 
 	def start(self):
+		return
 		_PATH_DEV_RFKILL = '/dev/rfkill'
 
 		for filename in scandir('/sys/devices/virtual/thermal'):
@@ -22,5 +23,8 @@ class Case(object):
 				with open(PurePath(filename, 'temp')) as f:
 					thermal_temp = int(f.read().strip()) / 1000
 				print(f'{filename.path} {thermal_type} {thermal_temp}')
+
+	def stop(self):
+		pass
 
 

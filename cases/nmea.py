@@ -16,14 +16,16 @@ class Case(object):
 		self.time = None
 		self.position = dict()
 		self.satellites = dict()
-		#self.stream = open('/dev/gnss0', 'r+b', buffering=0)
-		#self.stream.flush()
+		return
+		self.stream = open('/dev/gnss0', 'r+b', buffering=0)
+		self.stream.flush()
 		#self.sendPSTMGPSRESET()
 		#self.sendPSTMINITTIME()
 		#self.sendPSTMDUMPEPHEMS()
 		#self.sendPSTMDUMPALMANAC()
 
 	def start(self):
+		return
 		while True:
 			try:
 				line = self.stream.readline()
@@ -33,6 +35,9 @@ class Case(object):
 					self.parse(line)
 			except Exception as e:
 				logger.warning('error: %s', e)
+
+	def stop(self):
+		pass
 
 	def send(self, cmd):
 		self.stream.write(cmd.encode('ascii'))

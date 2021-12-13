@@ -13,6 +13,7 @@ class Case(object):
 		pass
 
 	def start(self):
+		return
 		for filename in scandir('/dev'):
 			if filename.name.startswith('video'):
 				video = v4l2capture.Video_device(filename.path)
@@ -31,4 +32,7 @@ class Case(object):
 						pass
 				finally:
 					video.close()
+
+	def stop(self):
+		pass
 
