@@ -18,5 +18,6 @@ Several tests to show the supported hardware in a linux driven mobile device.
 	author_email = "mdt@emdete.de",
 	url = "https://codeberg.org/Belphegor/phonetests",
 	packages=[ 'cases', 'displays', ],
-	data_files=(('bin/', ('phonetests', ), ), ),
+	data_files=(('bin/', ('bin/phonetests', ), ), ),
 	)
+
