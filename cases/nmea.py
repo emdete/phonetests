@@ -4,11 +4,11 @@ __license__ = "GPLv2"
 
 from math import modf
 from datetime import datetime
-from logging import getLogger, StreamHandler
 
+from logging import getLogger
 logger = getLogger(__name__)
 
-class Nmea(object):
+class Case(object):
 	def __init__(self, stdscr):
 		logger.debug('__init__')
 		self.stdscr = stdscr
@@ -16,12 +16,12 @@ class Nmea(object):
 		self.time = None
 		self.position = dict()
 		self.satellites = dict()
-		self.stream = open('/dev/gnss0', 'r+b', buffering=0)
+		#self.stream = open('/dev/gnss0', 'r+b', buffering=0)
+		#self.stream.flush()
 		#self.sendPSTMGPSRESET()
 		#self.sendPSTMINITTIME()
 		#self.sendPSTMDUMPEPHEMS()
 		#self.sendPSTMDUMPALMANAC()
-		self.stream.flush()
 
 	def start(self):
 		while True:

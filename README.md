@@ -12,6 +12,8 @@
 
 ### cam back
 
+The module requires [python-v4l2capture](https://codeberg.org/mdt/python-v4l2capture).
+
 ### cam front
 
 ### proximity sensor
@@ -30,7 +32,9 @@
 
 ### audio
 
-## Links
+## Go
+
+### Links
 
 [ncurses](https://pkg.go.dev/seehuhn.de/go/ncurses)
 

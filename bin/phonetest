@@ -7,6 +7,8 @@ log = getLogger('__name__')
 getLogger().addHandler(StreamHandler(open('/var/tmp/phonetests.log', 'a')))
 from os import environ
 from os import system
+from os import scandir
+from importlib import import_module
 
 x11 = environ.get('DISPLAY')
 wayland = environ.get('WAYLAND_DISPLAY')
@@ -21,5 +23,7 @@ else:
 	from displays.line import Display
 
 display = Display()
-display.add_display()
+for case in scandir('cases/'):
+	if case.name[0] not in ('.', '_', ):
+		display.add_display(case.name[:-3], import_module(f'cases.{case.name[:-3]}'))
 display.start()

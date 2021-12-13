@@ -13,9 +13,11 @@ class Display(object):
 		self.tk.bind('<Configure>', self._configure)
 		self.canvas = Canvas(self.tk, cursor='none', borderwidth=0, background='black', highlightthickness=0, )
 		#self.canvas.after(randint(l * 3000, l * 5000), tchange)
-		self.ti = self.canvas.create_text((200, 100), fill='gray', )
+		self.cases = dict()
 
-	def add_display(self):
+	def add_display(self, name, module):
+		self.cases[name] = module.Case(self)
+		self.ti = self.canvas.create_text((200, 100), fill='gray', )
 		self.canvas.itemconfig(self.ti, text='Sat: {}/{}/{}'.format(0, 0, 0), font=('Sans', 100, 'bold', ))
 
 	def stop(self, event):
