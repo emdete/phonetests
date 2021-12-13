@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 __copyright__ = 'Copyright (c) 2008-2021 M. Dietrich <mdt@emdete.de>'
-__license__ = 'GPLv3'
+__license__ = 'GPLv2'
 
 from os import scandir
 from pathlib import PurePath
