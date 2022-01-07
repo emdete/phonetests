@@ -27,7 +27,7 @@ class Case(object):
 							for framesize in video.get_framesizes(fourcc):
 								x, y = framesize['size_x'], framesize['size_y']
 								for frameinterval in video.get_frameintervals(fourcc, x, y):
-									print('\t', fourcc.decode(), x, y, frameinterval['fps'])
+									yield '\t', fourcc.decode(), x, y, frameinterval['fps']
 					except:
 						pass
 				finally:

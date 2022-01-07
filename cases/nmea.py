@@ -25,16 +25,7 @@ class Case(object):
 		#self.sendPSTMDUMPALMANAC()
 
 	def start(self):
-		return
-		while True:
-			try:
-				line = self.stream.readline()
-				line = line.decode('ascii')
-				logger.debug('received: %s', line)
-				if line:
-					self.parse(line)
-			except Exception as e:
-				logger.warning('error: %s', e)
+		yield 'noop'
 
 	def stop(self):
 		pass

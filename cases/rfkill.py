@@ -13,7 +13,6 @@ class Case(object):
 		pass
 
 	def start(self):
-		return
 		for filename in scandir('/sys/class/rfkill'):
 			if filename.name.startswith('rfkill'):
 				with open(PurePath(filename, 'type')) as f:
@@ -24,7 +23,7 @@ class Case(object):
 					rfkill_hard = int(f.read().strip())
 				with open(PurePath(filename, 'soft')) as f:
 					rfkill_soft = int(f.read().strip())
-				print(f'{filename.path} {rfkill_type} {rfkill_name} {rfkill_hard} {rfkill_soft}')
+				yield f'{filename.path} {rfkill_type} {rfkill_name} {rfkill_hard} {rfkill_soft}'
 
 		# 'state' 'device@' 'index' 'persistent' 'power/' 'subsystem@' 'uevent'
 
