@@ -4,6 +4,7 @@ __license__ = 'GPLv2'
 
 from os import scandir
 import v4l2capture
+from contextlib import closing
 
 from logging import getLogger
 logger = getLogger(__name__)
@@ -15,8 +16,7 @@ class Case(object):
 	def start(self):
 		for filename in scandir('/dev'):
 			if filename.name.startswith('video'):
-				video = v4l2capture.Video_device(filename.path)
-				try:
+				with closing(v4l2capture.Video_device(filename.path) as video:
 					driver, card, bus_info, capabilities = video.get_info()
 					capabilities = ', '.join([n.decode() for n in capabilities])
 					yield f'{filename.name}; driver={driver}; card={card}bus; info={bus_info}; capabilities={capabilities}'
@@ -29,8 +29,6 @@ class Case(object):
 									yield '\t\t{} {} {} {}'.format(fourcc.decode(), x, y, frameinterval['fps'])
 					except:
 						yield 'error'
-				finally:
-					video.close()
 
 	def stop(self):
 		pass
