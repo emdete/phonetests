@@ -7,20 +7,21 @@ import (
 	"golang.org/x/sys/unix"
 )
 
-var _IOC_NRBITS = 8
-var _IOC_TYPEBITS = 8
-var _IOC_READ uint = 0
-var _IOC_NRSHIFT = 0
-var _IOC_TYPESHIFT = (_IOC_NRSHIFT+_IOC_NRBITS)
-var _IOC_SIZESHIFT = (_IOC_TYPESHIFT+_IOC_TYPEBITS)
-var _IOC_DIRSHIFT = (_IOC_SIZESHIFT+_IOC_SIZEBITS)
-var _IOC_SIZEBITS = 14
+var _IOC_NRBITS uint = 8
+var _IOC_TYPEBITS uint = 8
+var _IOC_SIZEBITS uint = 14
+var _IOC_NRSHIFT uint = 0
+var _IOC_TYPESHIFT uint = (_IOC_NRSHIFT+_IOC_NRBITS)
+var _IOC_SIZESHIFT uint = (_IOC_TYPESHIFT+_IOC_TYPEBITS)
+var _IOC_DIRSHIFT uint = (_IOC_SIZESHIFT+_IOC_SIZEBITS)
+var _IOC_READ uint = 2
 
 func _IOC(dir uint, type_ rune, nr uint, size uint) uint {
-	return (((dir) << _IOC_DIRSHIFT) |
+	ret := (((dir) << _IOC_DIRSHIFT) |
 		((uint(type_)) << _IOC_TYPESHIFT) |
 		((nr) << _IOC_NRSHIFT) |
 		((size) << _IOC_SIZESHIFT))
+	return ret
 }
 
 func errnoErr(e syscall.Errno) error {
