@@ -2,10 +2,21 @@ package main
 
 import (
 	"log"
+	"time"
 	"strings"
 	"path/filepath"
 	"syscall"
 )
+
+var type2str = map[int]string {
+	0: "EV_SYN",
+	5: "EV_KEY",
+}
+
+var code2str = map[int]string {
+	212: "KEY_CAMERA",
+	2: "SW_HEADPHONE_INSERT",
+}
 
 func event() {
 	eventpath := "/dev/input"
@@ -37,12 +48,51 @@ func event() {
 					if strings.Contains(rawname, "Headphone") {
 						var r syscall.FdSet
 						r.Bits[fd/64] = 1 << (fd%64)
-						if _, err := syscall.Select(fd+1, &r, nil, nil, nil); err == nil {
-							buffer := make([]byte, 24 * 3)
-							if size, err := syscall.Read(fd, buffer); err != nil {
+						if _, err := syscall.Select(fd+1, &r, nil, nil, nil); err != nil {
+							panic(err)
+						} else {
+							buffer := make([]byte, 24)
+							if size, err := syscall.Read(fd, buffer); err != nil || size != 24 {
 								panic(err)
 							} else {
-								log.Printf("%s: %d %v", path, size, buffer)
+								index := 0
+								//tv_sec long8
+								var tv_sec int64 = 0
+								tv_sec += int64(buffer[index]); index++
+								tv_sec += int64(buffer[index]) << 8; index++
+								tv_sec += int64(buffer[index]) << 16; index++
+								tv_sec += int64(buffer[index]) << 24; index++
+								index++
+								index++
+								index++
+								index++
+								//tv_usec long8
+								var tv_usec int64 = 0
+								tv_usec += int64(buffer[index]); index++
+								tv_usec += int64(buffer[index]) << 8; index++
+								tv_usec += int64(buffer[index]) << 16; index++
+								tv_usec += int64(buffer[index]) << 24; index++
+								index++
+								index++
+								index++
+								index++
+								//type_ ushort2
+								type_ := 0
+								type_ += int(buffer[index]); index++
+								index++
+								//code ushort2
+								code := 0
+								code += int(buffer[index]); index++
+								index++
+								//value uint4
+								value := 0
+								value += int(buffer[index]); index++
+								index++
+								index++
+								index++
+								if type_ != 0 && code != 0 {
+									log.Printf("%s: %s %s %s %d", path, time.Unix(tv_sec, tv_usec).GoString(), type2str[type_], code2str[code], value)
+								}
 							}
 						}
 					}
