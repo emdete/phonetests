@@ -8,12 +8,12 @@ import (
 	"syscall"
 )
 
-var type2str = map[int]string {
+var type2str = map[uint16]string {
 	0: "EV_SYN",
 	5: "EV_KEY",
 }
 
-var code2str = map[int]string {
+var code2str = map[uint16]string {
 	212: "KEY_CAMERA",
 	2: "SW_HEADPHONE_INSERT",
 }
@@ -44,8 +44,8 @@ func event() {
 				if rawname, err := IoctlEVDEVGetRawName(fd); err != nil {
 					panic(err)
 				} else {
-					log.Printf("%s: %s", path, rawname)
 					if strings.Contains(rawname, "Headphone") {
+						log.Printf("%s: %s - plug/unplug headphone!", path, rawname)
 						var r syscall.FdSet
 						r.Bits[fd/64] = 1 << (fd%64)
 						if _, err := syscall.Select(fd+1, &r, nil, nil, nil); err != nil {
@@ -58,7 +58,7 @@ func event() {
 								index := 0
 								//tv_sec long8
 								var tv_sec int64 = 0
-								tv_sec += int64(buffer[index]); index++
+								tv_sec += int64(buffer[index]) << 0; index++
 								tv_sec += int64(buffer[index]) << 8; index++
 								tv_sec += int64(buffer[index]) << 16; index++
 								tv_sec += int64(buffer[index]) << 24; index++
@@ -68,7 +68,7 @@ func event() {
 								index++
 								//tv_usec long8
 								var tv_usec int64 = 0
-								tv_usec += int64(buffer[index]); index++
+								tv_usec += int64(buffer[index]) << 0; index++
 								tv_usec += int64(buffer[index]) << 8; index++
 								tv_usec += int64(buffer[index]) << 16; index++
 								tv_usec += int64(buffer[index]) << 24; index++
@@ -77,19 +77,19 @@ func event() {
 								index++
 								index++
 								//type_ ushort2
-								type_ := 0
-								type_ += int(buffer[index]); index++
-								index++
+								var type_ uint16 = 0
+								type_ += uint16(buffer[index]) << 0; index++
+								type_ += uint16(buffer[index]) << 8; index++
 								//code ushort2
-								code := 0
-								code += int(buffer[index]); index++
-								index++
+								var code uint16 = 0
+								code += uint16(buffer[index]) << 0; index++
+								code += uint16(buffer[index]) << 8; index++
 								//value uint4
-								value := 0
-								value += int(buffer[index]); index++
-								index++
-								index++
-								index++
+								var value uint32 = 0
+								value += uint32(buffer[index]) << 0; index++
+								value += uint32(buffer[index]) << 8; index++
+								value += uint32(buffer[index]) << 16; index++
+								value += uint32(buffer[index]) << 24; index++
 								if type_ != 0 && code != 0 {
 									log.Printf("%s: %s %s %s %d", path, time.Unix(tv_sec, tv_usec).GoString(), type2str[type_], code2str[code], value)
 								}
