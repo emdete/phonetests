@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"log"
 	"time"
 	"strings"
@@ -55,43 +56,20 @@ func event() {
 							if size, err := syscall.Read(fd, buffer); err != nil || size != 24 {
 								panic(err)
 							} else {
-								index := 0
 								//tv_sec long8
-								var tv_sec int64 = 0
-								tv_sec += int64(buffer[index]) << 0; index++
-								tv_sec += int64(buffer[index]) << 8; index++
-								tv_sec += int64(buffer[index]) << 16; index++
-								tv_sec += int64(buffer[index]) << 24; index++
-								index++
-								index++
-								index++
-								index++
+								tv_sec := int64(binary.LittleEndian.Uint64(buffer[0:8]))
 								//tv_usec long8
-								var tv_usec int64 = 0
-								tv_usec += int64(buffer[index]) << 0; index++
-								tv_usec += int64(buffer[index]) << 8; index++
-								tv_usec += int64(buffer[index]) << 16; index++
-								tv_usec += int64(buffer[index]) << 24; index++
-								index++
-								index++
-								index++
-								index++
+								tv_usec := int64(binary.LittleEndian.Uint64(buffer[8:16]))
 								//type_ ushort2
-								var type_ uint16 = 0
-								type_ += uint16(buffer[index]) << 0; index++
-								type_ += uint16(buffer[index]) << 8; index++
+								type_ := binary.LittleEndian.Uint16(buffer[16:18])
 								//code ushort2
-								var code uint16 = 0
-								code += uint16(buffer[index]) << 0; index++
-								code += uint16(buffer[index]) << 8; index++
+								code := binary.LittleEndian.Uint16(buffer[18:20])
 								//value uint4
-								var value uint32 = 0
-								value += uint32(buffer[index]) << 0; index++
-								value += uint32(buffer[index]) << 8; index++
-								value += uint32(buffer[index]) << 16; index++
-								value += uint32(buffer[index]) << 24; index++
+								value := binary.LittleEndian.Uint64(buffer[0:8])
 								if type_ != 0 && code != 0 {
-									log.Printf("%s: %s %s %s %d", path, time.Unix(tv_sec, tv_usec).GoString(), type2str[type_], code2str[code], value)
+									log.Printf("%s: %s %s %s %d",
+										path, time.Unix(tv_sec, tv_usec).GoString(),
+										type2str[type_], code2str[code], value)
 								}
 							}
 						}

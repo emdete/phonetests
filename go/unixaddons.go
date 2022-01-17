@@ -15,6 +15,8 @@ var _IOC_TYPESHIFT uint = (_IOC_NRSHIFT+_IOC_NRBITS)
 var _IOC_SIZESHIFT uint = (_IOC_TYPESHIFT+_IOC_TYPEBITS)
 var _IOC_DIRSHIFT uint = (_IOC_SIZESHIFT+_IOC_SIZEBITS)
 var _IOC_READ uint = 2
+const EV_MAX uint = 0x1f
+const KEY_MAX = 0x2ff
 
 func _IOC(dir uint, type_ rune, nr uint, size uint) uint {
 	ret := (((dir) << _IOC_DIRSHIFT) |
@@ -46,3 +48,18 @@ func IoctlEVDEVGetRawName(fd int) (string, error) {
 	return unix.ByteSliceToString(value[:]), err
 }
 
+func EVIOCGBIT(ev, length uint) uint {
+	return _IOC(_IOC_READ, 'E', 0x20 + (ev), length)
+}
+
+func IoctlEVDEVGetBit(fd int) ([EV_MAX]byte, error) {
+	var value [EV_MAX]byte;
+	err := ioctlPtr(fd, EVIOCGBIT(0, EV_MAX), unsafe.Pointer(&value[0]))
+	return value, err
+}
+
+func IoctlEVDEVGetBitEv(fd int, ev uint) ([KEY_MAX]byte, error) {
+	var value [KEY_MAX]byte;
+	err := ioctlPtr(fd, EVIOCGBIT(ev, KEY_MAX), unsafe.Pointer(&value[0]))
+	return value, err
+}
