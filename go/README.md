@@ -1,6 +1,18 @@
 # Go
 
+## Cases
+
+### event
+
+### rfkill
+
+### thermal
+
+### video
+
 ## Possible UIs
+
+A console UI is prefered but the decision is difficult:
 
 ### Links
 
