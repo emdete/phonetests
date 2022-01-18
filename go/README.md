@@ -1,7 +1,12 @@
+# Go
 
-## Go
+## Possible UIs
 
 ### Links
+
+[mauview](https://maunium.net/go/mauview)
+
+[tview](https://github.com/rivo/tview)
 
 [ncurses](https://pkg.go.dev/seehuhn.de/go/ncurses)
 
