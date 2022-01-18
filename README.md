@@ -1,6 +1,6 @@
 # Phone Test
 
-## Tests
+## Tests cases
 
 ### wifi
 
@@ -11,8 +11,6 @@
 ### gps
 
 ### cam back
-
-The module requires [python-v4l2capture](https://codeberg.org/mdt/python-v4l2capture).
 
 ### cam front
 
@@ -31,14 +29,4 @@ The module requires [python-v4l2capture](https://codeberg.org/mdt/python-v4l2cap
 ### power connection
 
 ### audio
-
-## Go
-
-### Links
-
-[ncurses](https://pkg.go.dev/seehuhn.de/go/ncurses)
-
-[tk](https://github.com/visualfc/atk)
-
-[fltk](https://github.com/zot/go-fltk)
 
