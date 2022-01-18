@@ -1,6 +1,16 @@
 # Phone Test
 
-## Tests cases
+## Implementations
+
+### Go
+
+The main implementation is done in go.
+
+### Py
+
+For learning i started with a python3 implementation.
+
+## Cases
 
 ### wifi
 
