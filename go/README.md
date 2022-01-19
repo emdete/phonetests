@@ -6,6 +6,12 @@
 
 ### rfkill
 
+### battery
+
+### power
+
+### leds
+
 ### thermal
 
 ### video
